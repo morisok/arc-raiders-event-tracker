@@ -66,7 +66,6 @@ class AppName(QWidget):
         self.layout.addWidget(self.event_selection)
 
         self.layout.addWidget(self.event_list)
-        self.layout.addWidget(self.refresh_btn)
 
         # widget modifications
 
