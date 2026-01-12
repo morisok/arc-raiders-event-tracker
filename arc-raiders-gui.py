@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QLabel, QComboBox, QListWidget
+    QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QComboBox, QListWidget
 )
 from PySide6.QtGui import (
-    QPixmap, QFont
+    QFont
 )
 import sys
 import requests
@@ -66,6 +66,7 @@ class AppName(QWidget):
         self.layout.addWidget(self.event_selection)
 
         self.layout.addWidget(self.event_list)
+        self.layout.addWidget(self.refresh_btn)
 
         # widget modifications
 
@@ -78,6 +79,7 @@ class AppName(QWidget):
         # connections go here
 
         self.map_selection.currentIndexChanged.connect(self.showSelectedMapEvents)
+        self.event_selection.currentIndexChanged.connect(self.showSelectedMapEvents)
 
     # logic goes here
 
