@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QComboBox, QListWidget
+    QApplication, QWidget, QVBoxLayout, QLabel, QComboBox, QListWidget
 )
 from PySide6.QtGui import (
     QFont
