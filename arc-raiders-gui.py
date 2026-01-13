@@ -53,7 +53,9 @@ class AppName(QWidget):
             'Lush Blooms',
             'Matriarch',
             'Night Raid',
-            'Prospecting Probes'
+            'Prospecting Probes',
+            'Husk Graveyard',
+            'Uncovered Caches'
         ])
 
         # buttons
