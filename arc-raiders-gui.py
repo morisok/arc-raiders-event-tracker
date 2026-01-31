@@ -14,11 +14,21 @@ class AppName(QWidget):
 
         # variables used in the class
 
+        self.map_names = ()
+        self.event_names = ()
+
         self.init_ui()
 
     def init_ui(self):
         self.title = 'Arc Raiders Event Tracker'
         self.setWindowTitle(self.title)
+
+        # populate QComboBox
+
+        self.getEventNames()
+        self.getMapNames()
+
+        # layout settings
 
         self.layout = QVBoxLayout() # V is for vertical
         self.setLayout(self.layout)
@@ -32,31 +42,10 @@ class AppName(QWidget):
         # inputs
 
         self.map_selection = QComboBox()
-        self.map_selection.addItems([
-            '-- Select a map --',
-            'Dam Battlegrounds',
-            'Buried City',
-            'Spaceport',
-            'The Blue Gate',
-            'Stella Montis'
-        ])
+        self.map_selection.addItems(['-- Select a map --',] + list(self.map_names))
 
         self.event_selection = QComboBox()
-        self.event_selection.addItems([
-            '-- Select a specific event --',
-            'Cold Snap',
-            'Electromagnetic Storm',
-            'Harvester',
-            'Hidden Bunker',
-            'Launch Tower Loot',
-            'Locked Gate',
-            'Lush Blooms',
-            'Matriarch',
-            'Night Raid',
-            'Prospecting Probes',
-            'Husk Graveyard',
-            'Uncovered Caches'
-        ])
+        self.event_selection.addItems(['-- Select a specific event --',] + list(self.event_names))
 
         # buttons
 
@@ -84,6 +73,14 @@ class AppName(QWidget):
 
     # logic goes here
 
+    def getEventNames(self):
+        data = self.getEventSchedule()
+        self.event_names = tuple(sorted({event['name'] for event in data['data']}))
+
+    def getMapNames(self):
+        data = self.getEventSchedule()
+        self.map_names = tuple(sorted({event['map'] for event in data['data']}))
+
     def getEventSchedule(self) -> dict:
         url: str = 'https://metaforge.app/api/arc-raiders/events-schedule'
 
@@ -99,27 +96,13 @@ class AppName(QWidget):
             self.event_list.clear()
             return
 
-        map_api_names = {
-            'Dam Battlegrounds': 'Dam',
-            'Buried City': 'Buried City',
-            'Spaceport': 'Spaceport',
-            'The Blue Gate': 'Blue Gate',
-            'Stella Montis': 'Stella Montis'
-        }
-        api_map = map_api_names.get(selected_map)
-        if not api_map:
-            self.event_list.clear()
-            self.event_list.addItem('Invalid map selected.')
-            return
-
         data = self.getEventSchedule()
 
         now_ms = int(datetime.now().timestamp() * 1000) # current time in ms
 
         upcoming_events = [
             event for event in data['data']
-            if event['map'] == api_map
-               and event['startTime'] > now_ms
+               if event['startTime'] > now_ms
                and (selected_event == '-- Select a specific event --' or event['name'] == selected_event) # skips the event filter if no event is selected
         ]
 
