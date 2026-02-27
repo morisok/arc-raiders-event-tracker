@@ -45,7 +45,7 @@ class AppName(QWidget):
         self.map_selection.addItems(['-- Select a map --',] + list(self.map_names))
 
         self.event_selection = QComboBox()
-        self.event_selection.addItems(['-- Select a specific event --',] + list(self.event_names))
+        self.event_selection.addItems(['-- All events --',] + list(self.event_names))
 
         # buttons
 
@@ -103,7 +103,7 @@ class AppName(QWidget):
         upcoming_events = [
             event for event in data['data']
                if event['startTime'] > now_ms
-               and (selected_event == '-- Select a specific event --' or event['name'] == selected_event) # skips the event filter if no event is selected
+               and (selected_event == '-- All events --' or event['name'] == selected_event) # skips the event filter if no event is selected
         ]
 
         upcoming_events.sort(key=lambda event: event['startTime']) # sorts by the starting time of the events
@@ -111,7 +111,7 @@ class AppName(QWidget):
 
         self.event_list.clear() # clears the list
         if not upcoming_events:
-            if selected_event == '-- Select a specific event --':
+            if selected_event == '-- All events --':
                 msg = f'No upcoming events on {selected_map} right now.'
             else:
                 msg = f'No upcoming {selected_event} on {selected_map}.'
